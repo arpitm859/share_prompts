@@ -1,11 +1,6 @@
 import { Schema, model, models } from 'mongoose';
 
-const userSchema = new Schema({
-	email: {
-		type: String,
-		unique: [true, 'Email already exists!'],
-		required: [true, 'Email is required!'],
-	},
+const userSchema = new Schema<TUser>({
 	username: {
 		type: String,
 		required: [true, 'Email is required'],
@@ -14,11 +9,16 @@ const userSchema = new Schema({
 			'Username invalid, it should contain 8-20 alphanumeric letters and be unique!',
 		],
 	},
+	email: {
+		type: String,
+		unique: true,
+		required: [true, 'Email is required!'],
+	},
 	image: {
 		type: String,
 	},
 });
 
-const User = models.User || model('User', userSchema);
+const User = models.User || model<TUser>('User', userSchema);
 
 export default User;

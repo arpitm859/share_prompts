@@ -3,11 +3,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
+import { signIn, signOut, useSession, getProviders, ClientSafeProvider, LiteralUnion } from 'next-auth/react';
+import { BuiltInProviderType } from 'next-auth/providers';
 
 const Nav = () => {
 	const [isUserLoggedIn, setisUserLoggedIn] = useState(false);
-	const [providers, setproviders] = useState(null);
+	const [providers, setproviders] = useState<Record<
+		LiteralUnion<BuiltInProviderType, string>,
+		ClientSafeProvider
+	> | null>(null);
 	const { data: session, status } = useSession();
 	const [toggleDropdown, settoggleDropdown] = useState(false);
 
@@ -50,7 +54,7 @@ const Nav = () => {
 						</button>
 						<Link href='/profile'>
 							<Image
-								src={session?.user?.image}
+								src={session!.user!.image!}
 								width={37}
 								height={37}
 								className='rounded-full'
@@ -78,7 +82,7 @@ const Nav = () => {
 				{isUserLoggedIn ? (
 					<div className='flex'>
 						<Image
-							src={session?.user?.image}
+							src={session!.user!.image!}
 							width={37}
 							height={37}
 							className='rounded-full'

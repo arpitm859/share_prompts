@@ -12,6 +12,7 @@ const nextConfig = {
 			...config.experiments,
 			topLevelAwait: true,
 		};
+		config.resolve.extensions.push('.ts', '.tsx');
 		return config;
 	},
 };
